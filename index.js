@@ -1,7 +1,7 @@
 inquirer = require("inquirer");
 const fs = require("fs");
-
 const { Square, Circle, Triangle } = require("./lib/shapes.js");
+
 let color = "";
 let text = "";
 let textColor = "";
@@ -69,6 +69,13 @@ function getText() {
         .prompt({
             name: "text",
             message: "Please enter 3 letters for the logo.",
+            validate: function (input) {
+                if (/^[a-zA-Z]{3}$/.test(input)) {
+                    return true;
+                } else {
+                    return "Please enter exactly 3 letters.";
+                }
+            },
         })
         .then((answer) => {
             text = answer.text;
@@ -80,11 +87,11 @@ function getText() {
 
 function writeFile(shape) {
     const filePath = `./examples/${shape.text}.svg`;
-    fs.writeFile(filePath, shape.render(), (err) => {
+    fs.writeFile(filePath, shape.setBasics(shape.render()), (err) => {
         if (err) {
             console.error("Error creating SVG file:", err);
         } else {
-            console.log("SVG file created successfully!");
+            console.log("Generated logo.svg");
         }
     });
 }
