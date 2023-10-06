@@ -80,14 +80,13 @@ function getText() {
         .then((answer) => {
             text = answer.text;
             shape.setText(text);
-            console.log(shape);
             writeFile(shape);
         });
 }
 
 function writeFile(shape) {
     const filePath = `./examples/${shape.text}.svg`;
-    fs.writeFile(filePath, shape.setBasics(shape.render()), (err) => {
+    fs.writeFile(filePath, shape.getFormat(shape.render()), (err) => {
         if (err) {
             console.error("Error creating SVG file:", err);
         } else {
